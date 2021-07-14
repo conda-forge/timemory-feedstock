@@ -4,6 +4,11 @@
 {% set generator = "NMake Makefiles" %}  # [win]
 {% set generator = "Unix Makefiles" %}  # [not win]
 
+{% set cmake_args = "" %}
+
+{% set generator_args = "-j4" %}  # [not win]
+{% set generator_args = "/maxcpucount:4" %}  # [win]
+
 package:
   name: '{{ name|lower }}'
   version: '{{ version }}'
@@ -15,7 +20,6 @@ source:
 build:
   number: 1
   script: "{{ PYTHON }} setup.py install --single-version-externally-managed --record record.txt \
-    -j 2 \
     -G \"{{ generator }}\" \
     --cxx-standard=17 \
     --enable-portable \
@@ -36,7 +40,9 @@ build:
     --disable-gperftools \
     --disable-compiler-instrumentation \
     --disable-install-rpath-use-link-path \
-    --skip-generator-test"
+    --skip-generator-test \
+    -- {{ cmake_args }} \
+    -- {{ generator_args }}"
   skip: true  # [osx]
 
 requirements:
@@ -52,6 +58,7 @@ requirements:
     - pybind11
     - pybind11-abi
     - scikit-build
+    - {{ mpi }}  # [linux and mpi != 'nompi']
   run:
     - python
     - six
@@ -61,6 +68,8 @@ requirements:
     - pandas
     - matplotlib-base
     - multiprocess
+    - mpi4y  # [linux and mpi != 'nompi']
+    - {{ mpi }}  # [linux and mpi != 'nompi']
 
 test:
   imports:
