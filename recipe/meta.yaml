@@ -7,7 +7,7 @@
 {% set cmake_args = "" %}
 
 {% set generator_args = "-j4" %}  # [not win]
-{% set generator_args = "/maxcpucount:4" %}  # [win]
+{% set generator_args = "" %}  # [win]
 
 package:
   name: '{{ name|lower }}'
@@ -68,7 +68,7 @@ requirements:
     - pandas
     - matplotlib-base
     - multiprocess
-    - mpi4y  # [linux and mpi != 'nompi']
+    - mpi4py  # [linux and mpi != 'nompi']
     - {{ mpi }}  # [linux and mpi != 'nompi']
 
 test:
