@@ -37,7 +37,7 @@ build:
     --disable-compiler-instrumentation \
     --disable-install-rpath-use-link-path \
     --skip-generator-test"
-  skip: true  # [osx or win]
+  skip: true  # [osx]
 
 requirements:
   build:
