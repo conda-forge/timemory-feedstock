@@ -13,7 +13,7 @@ source:
   sha256: 2b3f2b1f675d9e5ca56e17ab945c16bf2a44582205d0a3e0731be732fb5a8477
 
 build:
-  number: 0
+  number: 1
   script: "{{ PYTHON }} setup.py install --single-version-externally-managed --record record.txt \
     -j 2 \
     -G \"{{ generator }}\" \
