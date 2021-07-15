@@ -5,8 +5,7 @@
 {% set generator = "NMake Makefiles" %}  # [win]
 {% set generator = "Unix Makefiles" %}  # [not win]
 
-{% set cmake_args = "" %}  # [not osx]
-{% set cmake_args = "-DCMAKE_C_EXTENSIONS=ON" %}  # [osx]
+{% set cmake_args = "" %}
 
 {% set generator_args = "-j2" %}  # [not win]
 {% set generator_args = "" %}  # [win]
@@ -57,7 +56,7 @@ build:
     --skip-generator-test \
     -- {{ cmake_args }} \
     -- {{ generator_args }}"
-  skip: true  # [py2k or py!=38]
+  skip: true  # [(x86 and not x86_64) or osx or py!=38]
 
 requirements:
   build:
