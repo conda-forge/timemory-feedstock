@@ -104,7 +104,7 @@ test:
     - timemory-avail -a
     - timem -h  # [not win]
     # skip test_mallocp because numpy isn't allocating via malloc in GOT
-    - sed -i 's/def test_mallocp/@pytest.mark.skip\n    def test_mallocp/1' timemory/test/test_tools.py  # [linux]
+    - sed -i 's/not tim.component.is_available("malloc_gotcha")/True/1' timemory/test/test_tools.py  # [linux]
     - pytest --pyargs timemory
 
 about:
