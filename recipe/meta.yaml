@@ -4,6 +4,11 @@
 {% set generator = "NMake Makefiles" %}  # [win]
 {% set generator = "Unix Makefiles" %}  # [not win]
 
+{% set cmake_args = "" %}
+
+{% set generator_args = "-j2" %}  # [not win]
+{% set generator_args = "" %}  # [win]
+
 package:
   name: {{ name|lower }}
   version: {{ version }}
@@ -14,9 +19,31 @@ source:
 
 build:
   number: 0
-  script: {{ PYTHON }} setup.py install --single-version-externally-managed --record record.txt -j 2 -G "{{ generator }}" --cxx-standard=17 --enable-portable --enable-static-libs --disable-c --disable-cuda --disable-fortran --disable-ert --disable-develop --disable-shared-libs --disable-unity-build --disable-require-packages
-    --disable-ompt --disable-upcxx --disable-kokkos --disable-caliper --disable-dyninst --disable-gperftools --disable-compiler-instrumentation --disable-install-rpath-use-link-path --skip-generator-test
-  skip: true  # [osx or win]
+  script: "{{ PYTHON }} setup.py install --single-version-externally-managed --record record.txt \
+    -G \"{{ generator }}\" \
+    --cxx-standard=17 \
+    --enable-portable \
+    --enable-static-libs \
+    --disable-c \
+    --disable-cuda \
+    --disable-fortran \
+    --disable-ert \
+    --disable-develop \
+    --disable-shared-libs \
+    --disable-unity-build \
+    --disable-require-packages \
+    --disable-ompt \
+    --disable-upcxx \
+    --disable-kokkos \
+    --disable-caliper \
+    --disable-dyninst \
+    --disable-gperftools \
+    --disable-compiler-instrumentation \
+    --disable-install-rpath-use-link-path \
+    --skip-generator-test \
+    -- {{ cmake_args }} \
+    -- {{ generator_args }}"
+  skip: true  # [osx]
 
 requirements:
   build:
@@ -31,6 +58,7 @@ requirements:
     - pybind11
     - pybind11-abi
     - scikit-build
+    - {{ mpi }}  # [linux and mpi != 'nompi']
   run:
     - python
     - six
@@ -40,6 +68,8 @@ requirements:
     - pandas
     - matplotlib-base
     - multiprocess
+    - mpi4py  # [linux and mpi != 'nompi']
+    - {{ mpi }}  # [linux and mpi != 'nompi']
 
 test:
   imports:
