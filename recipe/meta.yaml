@@ -1,5 +1,6 @@
 {% set name = "timemory" %}
 {% set version = "3.2.2" %}
+{% set build = 1 %}
 
 {% set generator = "NMake Makefiles" %}  # [win]
 {% set generator = "Unix Makefiles" %}  # [not win]
@@ -8,6 +9,17 @@
 
 {% set generator_args = "-j2" %}  # [not win]
 {% set generator_args = "" %}  # [win]
+
+# Set MPI related variables
+{% if mpi != "nompi" %}
+  {% set mpi_build_prefix = "_" + mpi|string %}
+  {% set build = build + 100 %}
+{% else %}
+  {% set mpi_build_prefix = "" %}
+{% endif %}
+
+# Set CUDA related variables (reserved for future use)
+{% set cuda_build_prefix = "" %}
 
 package:
   name: {{ name|lower }}
@@ -18,7 +30,8 @@ source:
   sha256: b7425357d3c028aaf1f15622f8c29a897add0d332210f4c5dbc834b4e412f8cb
 
 build:
-  number: 0
+  number: {{ build }}
+  string: "py{{ py }}{{ mpi_build_prefix }}{{ cuda_build_prefix }}h{{ PKG_HASH }}_{{ build }}"
   script: "{{ PYTHON }} setup.py install --single-version-externally-managed --record record.txt \
     -G \"{{ generator }}\" \
     --cxx-standard=17 \
@@ -43,12 +56,12 @@ build:
     --skip-generator-test \
     -- {{ cmake_args }} \
     -- {{ generator_args }}"
-  skip: true  # [osx]
+  skip: true  # [py2k or py!=38]
 
 requirements:
   build:
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
+    - {{ compiler("c") }}
+    - {{ compiler("cxx") }}
     - cmake
     - ninja
   host:
@@ -58,7 +71,7 @@ requirements:
     - pybind11
     - pybind11-abi
     - scikit-build
-    - {{ mpi }}  # [linux and mpi != 'nompi']
+    - {{ mpi }}  # [linux and mpi != "nompi"]
   run:
     - python
     - six
@@ -68,8 +81,7 @@ requirements:
     - pandas
     - matplotlib-base
     - multiprocess
-    - mpi4py  # [linux and mpi != 'nompi']
-    - {{ mpi }}  # [linux and mpi != 'nompi']
+    - {{ mpi }}  # [linux and mpi != "nompi"]
 
 test:
   imports:
@@ -78,6 +90,20 @@ test:
     - timemory.profiler
     - timemory.trace
     - timemory.util
+  requires:
+    - pytest
+  source_files:
+    - timemory/test/*
+  commands:
+    - timemory-python-line-profiler -h
+    - timemory-python-profiler -h
+    - timemory-python-trace -h
+    - timemory-roofline -h
+    - timemory-analyze -h
+    - timemory-plotter -h
+    - timemory-avail -a
+    - timem -h  # [not win]
+    - pytest --pyargs timemory
 
 about:
   home: https://github.com/NERSC/timemory.git
