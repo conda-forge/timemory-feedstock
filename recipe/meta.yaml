@@ -1,12 +1,12 @@
 {% set name = "timemory" %}
-{% set version = "3.2.1" %}
+{% set version = "3.2.2.dev0" %}
 
 {% set generator = "NMake Makefiles" %}  # [win]
 {% set generator = "Unix Makefiles" %}  # [not win]
 
 {% set cmake_args = "" %}
 
-{% set generator_args = "-j4" %}  # [not win]
+{% set generator_args = "-j2" %}  # [not win]
 {% set generator_args = "" %}  # [win]
 
 package:
@@ -15,7 +15,7 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 2b3f2b1f675d9e5ca56e17ab945c16bf2a44582205d0a3e0731be732fb5a8477
+  sha256: 0b804db14563acdbf0d42ab033b94547831648278fdd557c68e79172c91ab6db
 
 build:
   number: 1
