@@ -1,5 +1,5 @@
 {% set name = "timemory" %}
-{% set version = "3.2.2.dev0" %}
+{% set version = "3.2.2" %}
 
 {% set generator = "NMake Makefiles" %}  # [win]
 {% set generator = "Unix Makefiles" %}  # [not win]
@@ -15,10 +15,10 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 0b804db14563acdbf0d42ab033b94547831648278fdd557c68e79172c91ab6db
+  sha256: b7425357d3c028aaf1f15622f8c29a897add0d332210f4c5dbc834b4e412f8cb
 
 build:
-  number: 1
+  number: 0
   script: "{{ PYTHON }} setup.py install --single-version-externally-managed --record record.txt \
     -G \"{{ generator }}\" \
     --cxx-standard=17 \
