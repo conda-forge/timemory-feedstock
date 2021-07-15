@@ -10,8 +10,8 @@
 {% set generator_args = "" %}  # [win]
 
 package:
-  name: '{{ name|lower }}'
-  version: '{{ version }}'
+  name: {{ name|lower }}
+  version: {{ version }}
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
@@ -83,14 +83,14 @@ about:
   home: https://github.com/NERSC/timemory.git
   license: MIT
   license_family: MIT
-  license_file: 'LICENSE'
-  summary: 'Lightweight performance analysis toolkit and suite of tools'
+  license_file: LICENSE
+  summary: Lightweight performance analysis toolkit and suite of tools
   description: |
     Lightweight, cross-language utility for recording timing, memory, resource usage, and hardware counters on the CPU and GPU.
     Timemory provides 40+ metrics for C, C++, CUDA, and/or Python codes that can arbitrarily composed into distinct toolsets
     which can inter-weaved and without nesting restrictions.
-  doc_url: 'https://timemory.readthedocs.io/'
-  dev_url: 'https://github.com/NERSC/timemory.git'
+  doc_url: https://timemory.readthedocs.io/
+  dev_url: https://github.com/NERSC/timemory.git
 
 extra:
   recipe-maintainers:
