@@ -1,8 +1,13 @@
 {% set name = "timemory" %}
-{% set version = "3.2.1" %}
+{% set version = "3.2.2" %}
 
 {% set generator = "NMake Makefiles" %}  # [win]
 {% set generator = "Unix Makefiles" %}  # [not win]
+
+{% set cmake_args = "" %}
+
+{% set generator_args = "-j2" %}  # [not win]
+{% set generator_args = "" %}  # [win]
 
 package:
   name: '{{ name|lower }}'
@@ -10,12 +15,11 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 2b3f2b1f675d9e5ca56e17ab945c16bf2a44582205d0a3e0731be732fb5a8477
+  sha256: b7425357d3c028aaf1f15622f8c29a897add0d332210f4c5dbc834b4e412f8cb
 
 build:
   number: 0
   script: "{{ PYTHON }} setup.py install --single-version-externally-managed --record record.txt \
-    -j 2 \
     -G \"{{ generator }}\" \
     --cxx-standard=17 \
     --enable-portable \
@@ -36,8 +40,10 @@ build:
     --disable-gperftools \
     --disable-compiler-instrumentation \
     --disable-install-rpath-use-link-path \
-    --skip-generator-test"
-  skip: true  # [osx or win]
+    --skip-generator-test \
+    -- {{ cmake_args }} \
+    -- {{ generator_args }}"
+  skip: true  # [osx]
 
 requirements:
   build:
@@ -52,6 +58,7 @@ requirements:
     - pybind11
     - pybind11-abi
     - scikit-build
+    - {{ mpi }}  # [linux and mpi != 'nompi']
   run:
     - python
     - six
@@ -61,6 +68,8 @@ requirements:
     - pandas
     - matplotlib-base
     - multiprocess
+    - mpi4py  # [linux and mpi != 'nompi']
+    - {{ mpi }}  # [linux and mpi != 'nompi']
 
 test:
   imports:
