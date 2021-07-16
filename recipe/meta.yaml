@@ -81,7 +81,7 @@ requirements:
     - pandas
     - matplotlib-base
     - multiprocess
-    - IPython>=0.13
+    - IPython >=0.13
     - {{ mpi }}               # [linux and mpi != "nompi"]
 
 test:
