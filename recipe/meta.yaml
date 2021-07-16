@@ -2,13 +2,13 @@
 {% set version = "3.2.2" %}
 {% set build = 1 %}
 
-{% set generator = "NMake Makefiles" %}  # [win]
-{% set generator = "Unix Makefiles" %}  # [not win]
+{% set generator = "Unix Makefiles" %}    # [not win]
+{% set generator = "NMake Makefiles" %}   # [win]
 
 {% set cmake_args = "" %}
 
 {% set generator_args = "-j2" %}  # [not win]
-{% set generator_args = "" %}  # [win]
+{% set generator_args = "" %}     # [win]
 
 # Set MPI related variables
 {% if mpi != "nompi" %}
@@ -54,16 +54,16 @@ build:
     --disable-compiler-instrumentation \
     --disable-install-rpath-use-link-path \
     --skip-generator-test \
-    -- {{ cmake_args }} \
+    -- {{ cmake_args }}
+       -DCMAKE_VERBOSE_MAKEFILE=ON \
     -- {{ generator_args }}"
-  skip: true  # [(x86 and not x86_64) or osx or py!=38]
+  skip: true                  # [(x86 and not x86_64) or osx or py!=38]
 
 requirements:
   build:
     - {{ compiler("c") }}
     - {{ compiler("cxx") }}
     - cmake
-    - ninja
   host:
     - python
     - pip
@@ -71,7 +71,7 @@ requirements:
     - pybind11
     - pybind11-abi
     - scikit-build
-    - {{ mpi }}  # [linux and mpi != "nompi"]
+    - {{ mpi }}               # [linux and mpi != "nompi"]
   run:
     - python
     - six
@@ -81,7 +81,8 @@ requirements:
     - pandas
     - matplotlib-base
     - multiprocess
-    - {{ mpi }}  # [linux and mpi != "nompi"]
+    - IPython>=0.13
+    - {{ mpi }}               # [linux and mpi != "nompi"]
 
 test:
   imports:
@@ -92,6 +93,8 @@ test:
     - timemory.util
   requires:
     - pytest
+    - pytest-timeout
+    - mpi4py                  # [linux and mpi != "nompi"]
   source_files:
     - timemory/test/*
   commands:
@@ -102,9 +105,9 @@ test:
     - timemory-analyze -h
     - timemory-plotter -h
     - timemory-avail -a
-    - timem -h  # [not win]
-    - pytest -k 'not test_mallocp' --pyargs timemory  # [linux]
-    - pytest --pyargs timemory  # [not linux]
+    - timem -h                                                      # [not win]
+    - pytest --pyargs timemory --timeout=300                        # [not linux]
+    - pytest --pyargs timemory --timeout=300 -k 'not test_mallocp'  # [linux]
 
 about:
   home: https://github.com/NERSC/timemory
