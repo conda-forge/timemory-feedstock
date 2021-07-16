@@ -103,7 +103,8 @@ test:
     - timemory-plotter -h
     - timemory-avail -a
     - timem -h  # [not win]
-    - pytest -k 'not test_mallocp' --pyargs timemory
+    - pytest -k 'not test_mallocp' --pyargs timemory  # [linux]
+    - pytest --pyargs timemory  # [not linux]
 
 about:
   home: https://github.com/NERSC/timemory

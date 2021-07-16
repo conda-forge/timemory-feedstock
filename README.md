@@ -1,7 +1,7 @@
 About timemory
 ==============
 
-Home: https://github.com/NERSC/timemory.git
+Home: https://github.com/NERSC/timemory
 
 Package license: MIT
 
@@ -9,7 +9,7 @@ Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/timemory-feedst
 
 Summary: Lightweight performance analysis toolkit and suite of tools
 
-Development: https://github.com/NERSC/timemory.git
+Development: https://github.com/NERSC/timemory
 
 Documentation: https://timemory.readthedocs.io/
 
