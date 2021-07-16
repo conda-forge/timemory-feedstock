@@ -105,9 +105,10 @@ test:
     - timemory-analyze -h
     - timemory-plotter -h
     - timemory-avail -a
-    - timem -h                                                      # [not win]
-    - pytest --pyargs timemory --timeout=300                        # [not linux]
-    - pytest --pyargs timemory --timeout=300 -k 'not test_mallocp'  # [linux]
+    - timem -h               # [not win]
+    - pytest --pyargs timemory --timeout=300                                                            # [not (win or linux)]
+    - pytest --pyargs timemory --timeout=300 -k "not test_hatchet_analyze and not test_multithreaded"   # [win]
+    - pytest --pyargs timemory --timeout=300 -k "not test_mallocp"                                      # [linux]
 
 about:
   home: https://github.com/NERSC/timemory
