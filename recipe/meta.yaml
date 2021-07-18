@@ -1,5 +1,5 @@
 {% set name = "timemory" %}
-{% set version = "3.2.2" %}
+{% set version = "3.2.3" %}
 
 {% set generator = "NMake Makefiles" %}  # [win]
 {% set generator = "Unix Makefiles" %}  # [not win]
@@ -15,34 +15,12 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: b7425357d3c028aaf1f15622f8c29a897add0d332210f4c5dbc834b4e412f8cb
+  sha256: 2335961755a304bfc33a8d2427161c13f9592f87ae7a7ae8c901ca41c0127504
 
 build:
   number: 0
-  script: "{{ PYTHON }} setup.py install --single-version-externally-managed --record record.txt \
-    -G \"{{ generator }}\" \
-    --cxx-standard=17 \
-    --enable-portable \
-    --enable-static-libs \
-    --disable-c \
-    --disable-cuda \
-    --disable-fortran \
-    --disable-ert \
-    --disable-develop \
-    --disable-shared-libs \
-    --disable-unity-build \
-    --disable-require-packages \
-    --disable-ompt \
-    --disable-upcxx \
-    --disable-kokkos \
-    --disable-caliper \
-    --disable-dyninst \
-    --disable-gperftools \
-    --disable-compiler-instrumentation \
-    --disable-install-rpath-use-link-path \
-    --skip-generator-test \
-    -- {{ cmake_args }} \
-    -- {{ generator_args }}"
+  script: {{ PYTHON }} setup.py install --single-version-externally-managed --record record.txt -G "{{ generator }}" --cxx-standard=17 --enable-portable --enable-static-libs --disable-c --disable-cuda --disable-fortran --disable-ert --disable-develop --disable-shared-libs --disable-unity-build --disable-require-packages
+    --disable-ompt --disable-upcxx --disable-kokkos --disable-caliper --disable-dyninst --disable-gperftools --disable-compiler-instrumentation --disable-install-rpath-use-link-path --skip-generator-test -- {{ cmake_args }} -- {{ generator_args }}
   skip: true  # [osx]
 
 requirements:
