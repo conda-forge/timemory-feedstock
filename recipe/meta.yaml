@@ -1,13 +1,28 @@
 {% set name = "timemory" %}
-{% set version = "3.2.2" %}
+{% set version = "3.2.3" %}
+{% set build = 1 %}
 
-{% set generator = "NMake Makefiles" %}  # [win]
-{% set generator = "Unix Makefiles" %}  # [not win]
+{% set generator = "Unix Makefiles" %}    # [not win]
+{% set generator = "NMake Makefiles" %}   # [win]
 
 {% set cmake_args = "" %}
 
 {% set generator_args = "-j2" %}  # [not win]
-{% set generator_args = "" %}  # [win]
+{% set generator_args = "" %}     # [win]
+
+{% set cxx_standard = "17" %}     # [not osx]
+{% set cxx_standard = "14" %}     # [osx]
+
+# Set MPI related variables
+{% if mpi != "nompi" %}
+  {% set mpi_build_prefix = "_" + mpi|string %}
+  {% set build = build + 100 %}
+{% else %}
+  {% set mpi_build_prefix = "" %}
+{% endif %}
+
+# Set CUDA related variables (reserved for future use)
+{% set cuda_build_prefix = "" %}
 
 package:
   name: {{ name|lower }}
@@ -15,13 +30,14 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: b7425357d3c028aaf1f15622f8c29a897add0d332210f4c5dbc834b4e412f8cb
+  sha256: 2335961755a304bfc33a8d2427161c13f9592f87ae7a7ae8c901ca41c0127504
 
 build:
-  number: 0
+  number: {{ build }}
+  string: "py{{ py }}{{ mpi_build_prefix }}{{ cuda_build_prefix }}h{{ PKG_HASH }}_{{ build }}"
   script: "{{ PYTHON }} setup.py install --single-version-externally-managed --record record.txt \
     -G \"{{ generator }}\" \
-    --cxx-standard=17 \
+    --cxx-standard={{ cxx_standard }} \
     --enable-portable \
     --enable-static-libs \
     --disable-c \
@@ -41,16 +57,16 @@ build:
     --disable-compiler-instrumentation \
     --disable-install-rpath-use-link-path \
     --skip-generator-test \
-    -- {{ cmake_args }} \
+    -- {{ cmake_args }}
+       -DCMAKE_VERBOSE_MAKEFILE=ON \
     -- {{ generator_args }}"
-  skip: true  # [osx]
+  skip: true                  # [(x86 and not x86_64) or (osx and py==36)]
 
 requirements:
   build:
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
+    - {{ compiler("c") }}
+    - {{ compiler("cxx") }}
     - cmake
-    - ninja
   host:
     - python
     - pip
@@ -58,7 +74,7 @@ requirements:
     - pybind11
     - pybind11-abi
     - scikit-build
-    - {{ mpi }}  # [linux and mpi != 'nompi']
+    - {{ mpi }}               # [linux and mpi != "nompi"]
   run:
     - python
     - six
@@ -68,8 +84,8 @@ requirements:
     - pandas
     - matplotlib-base
     - multiprocess
-    - mpi4py  # [linux and mpi != 'nompi']
-    - {{ mpi }}  # [linux and mpi != 'nompi']
+    - IPython >=0.13
+    - {{ mpi }}               # [linux and mpi != "nompi"]
 
 test:
   imports:
@@ -78,9 +94,26 @@ test:
     - timemory.profiler
     - timemory.trace
     - timemory.util
+  requires:
+    - pytest                  # [linux]
+    - pytest-timeout          # [linux]
+    - mpi4py                  # [linux and mpi != "nompi" and mpi != "openmpi"]
+  source_files:
+    - timemory/test/*
+  commands:
+    - timemory-python-line-profiler -h
+    - timemory-python-profiler -h
+    - timemory-python-trace -h
+    - timemory-roofline -h
+    - timemory-analyze -h
+    - timemory-plotter -h
+    - timemory-avail -a
+    - timem -h                                                        # [not win]
+    - pytest --timeout=300 --pyargs timemory -k "not test_mallocp"    # [linux]
+    # skip pytest for windows and osx. Tend to have spurious failures due to other builds
 
 about:
-  home: https://github.com/NERSC/timemory.git
+  home: https://github.com/NERSC/timemory
   license: MIT
   license_family: MIT
   license_file: LICENSE
@@ -90,7 +123,7 @@ about:
     Timemory provides 40+ metrics for C, C++, CUDA, and/or Python codes that can arbitrarily composed into distinct toolsets
     which can inter-weaved and without nesting restrictions.
   doc_url: https://timemory.readthedocs.io/
-  dev_url: https://github.com/NERSC/timemory.git
+  dev_url: https://github.com/NERSC/timemory
 
 extra:
   recipe-maintainers:

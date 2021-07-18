@@ -1,7 +1,7 @@
 About timemory
 ==============
 
-Home: https://github.com/NERSC/timemory.git
+Home: https://github.com/NERSC/timemory
 
 Package license: MIT
 
@@ -9,7 +9,7 @@ Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/timemory-feedst
 
 Summary: Lightweight performance analysis toolkit and suite of tools
 
-Development: https://github.com/NERSC/timemory.git
+Development: https://github.com/NERSC/timemory
 
 Documentation: https://timemory.readthedocs.io/
 
@@ -117,6 +117,27 @@ Current build status
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=13404&branchName=master">
                   <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/timemory-feedstock?branchName=master&jobName=linux&configuration=linux_64_mpiopenmpipython3.9.____cpython" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_64_python3.7.____cpython</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=13404&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/timemory-feedstock?branchName=master&jobName=osx&configuration=osx_64_python3.7.____cpython" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_64_python3.8.____cpython</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=13404&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/timemory-feedstock?branchName=master&jobName=osx&configuration=osx_64_python3.8.____cpython" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_64_python3.9.____cpython</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=13404&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/timemory-feedstock?branchName=master&jobName=osx&configuration=osx_64_python3.9.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
