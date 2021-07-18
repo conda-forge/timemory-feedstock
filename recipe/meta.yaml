@@ -96,7 +96,8 @@ test:
     - timemory.util
   requires:
     - pytest
-    - mpi4py                  # [linux and mpi != "nompi"]
+    - pytest-timeout
+    - mpi4py                  # [linux and mpi != "nompi" and mpi != "openmpi"]
   source_files:
     - timemory/test/*
   commands:
@@ -108,9 +109,8 @@ test:
     - timemory-plotter -h
     - timemory-avail -a
     - timem -h               # [not win]
-    - pytest --pyargs timemory                                                            # [not (win or linux)]
-    - pytest --pyargs timemory -k "not test_hatchet_analyze and not test_multithreaded"   # [win]
-    - pytest --pyargs timemory -k "not test_mallocp"                                      # [linux]
+    - pytest --timeout=300 --pyargs timemory -k "not test_hatchet_analyze and not test_multithreaded"   # [win]
+    - pytest --timeout=300 --pyargs timemory -k "not test_mallocp"                                      # [linux]
 
 about:
   home: https://github.com/NERSC/timemory
