@@ -8,8 +8,8 @@
 {% set cmake_args = "-DCMAKE_CUDA_STANDARD=14" %}   # [cuda_compiler_version != "None"]
 {% set cmake_args = "" %}                           # [cuda_compiler_version == "None"]
 
-{% set generator_args = "-j2" %}  # [osx or (linux and cuda_compiler_version == "None")]
-{% set generator_args = "-j1" %}  # [linux and cuda_compiler_version != "None"]
+{% set generator_args = "-j2" %}  # [osx]
+{% set generator_args = "-j1" %}  # [linux]
 {% set generator_args = "" %}     # [win]
 
 {% set cxx_standard = "17" %}     # [not osx and cuda_compiler_version == "None"]
@@ -50,14 +50,14 @@ build:
     -G \"{{ generator }}\" \
     --cxx-standard={{ cxx_standard }} \
     --enable-portable \
-    --enable-static-libs \
+    --enable-shared-libs \
     {{ cuda_args }} \
     {{ mpi_args }} \
     --disable-c \
     --disable-fortran \
     --disable-ert \
     --disable-develop \
-    --disable-shared-libs \
+    --disable-static-libs \
     --disable-unity-build \
     --disable-require-packages \
     --disable-ompt \
