@@ -60,7 +60,7 @@ build:
     -- {{ cmake_args }}
        -DCMAKE_VERBOSE_MAKEFILE=ON \
     -- {{ generator_args }}"
-  skip: true                  # [(x86 and not x86_64) or py!=38]
+  skip: true                  # [x86 and not x86_64]
 
 requirements:
   build:
@@ -95,8 +95,8 @@ test:
     - timemory.trace
     - timemory.util
   requires:
-    - pytest
-    - pytest-timeout
+    - pytest                  # [linux]
+    - pytest-timeout          # [linux]
     - mpi4py                  # [linux and mpi != "nompi" and mpi != "openmpi"]
   source_files:
     - timemory/test/*
@@ -108,9 +108,9 @@ test:
     - timemory-analyze -h
     - timemory-plotter -h
     - timemory-avail -a
-    - timem -h               # [not win]
-    - pytest --timeout=300 --pyargs timemory -k "not test_hatchet_analyze and not test_multithreaded"   # [win]
-    - pytest --timeout=300 --pyargs timemory -k "not test_mallocp"                                      # [linux]
+    - timem -h                                                        # [not win]
+    - pytest --timeout=300 --pyargs timemory -k "not test_mallocp"    # [linux]
+    # skip pytest for windows and osx. Tend to have spurious failures due to other builds
 
 about:
   home: https://github.com/NERSC/timemory
