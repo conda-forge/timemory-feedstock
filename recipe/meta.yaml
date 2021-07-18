@@ -1,5 +1,5 @@
 {% set name = "timemory" %}
-{% set version = "3.2.2" %}
+{% set version = "3.2.3" %}
 {% set build = 1 %}
 
 {% set generator = "Unix Makefiles" %}    # [not win]
@@ -9,6 +9,9 @@
 
 {% set generator_args = "-j2" %}  # [not win]
 {% set generator_args = "" %}     # [win]
+
+{% set cxx_standard = "17" %}     # [not osx]
+{% set cxx_standard = "14" %}     # [osx]
 
 # Set MPI related variables
 {% if mpi != "nompi" %}
@@ -27,14 +30,14 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: b7425357d3c028aaf1f15622f8c29a897add0d332210f4c5dbc834b4e412f8cb
+  sha256: 2335961755a304bfc33a8d2427161c13f9592f87ae7a7ae8c901ca41c0127504
 
 build:
   number: {{ build }}
   string: "py{{ py }}{{ mpi_build_prefix }}{{ cuda_build_prefix }}h{{ PKG_HASH }}_{{ build }}"
   script: "{{ PYTHON }} setup.py install --single-version-externally-managed --record record.txt \
     -G \"{{ generator }}\" \
-    --cxx-standard=17 \
+    --cxx-standard={{ cxx_standard }} \
     --enable-portable \
     --enable-static-libs \
     --disable-c \
@@ -57,7 +60,7 @@ build:
     -- {{ cmake_args }}
        -DCMAKE_VERBOSE_MAKEFILE=ON \
     -- {{ generator_args }}"
-  skip: true                  # [(x86 and not x86_64) or osx or py!=38]
+  skip: true                  # [(x86 and not x86_64) or py!=38]
 
 requirements:
   build:
@@ -93,7 +96,6 @@ test:
     - timemory.util
   requires:
     - pytest
-    - pytest-timeout
     - mpi4py                  # [linux and mpi != "nompi"]
   source_files:
     - timemory/test/*
@@ -106,9 +108,9 @@ test:
     - timemory-plotter -h
     - timemory-avail -a
     - timem -h               # [not win]
-    - pytest --pyargs timemory --timeout=300                                                            # [not (win or linux)]
-    - pytest --pyargs timemory --timeout=300 -k "not test_hatchet_analyze and not test_multithreaded"   # [win]
-    - pytest --pyargs timemory --timeout=300 -k "not test_mallocp"                                      # [linux]
+    - pytest --pyargs timemory                                                            # [not (win or linux)]
+    - pytest --pyargs timemory -k "not test_hatchet_analyze and not test_multithreaded"   # [win]
+    - pytest --pyargs timemory -k "not test_mallocp"                                      # [linux]
 
 about:
   home: https://github.com/NERSC/timemory
