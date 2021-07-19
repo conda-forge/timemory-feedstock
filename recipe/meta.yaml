@@ -1,6 +1,6 @@
 {% set name = "timemory" %}
 {% set version = "3.2.3" %}
-{% set build = 2 %}
+{% set build = 3 %}
 
 {% set generator = "Unix Makefiles" %}    # [not win]
 {% set generator = "NMake Makefiles" %}   # [win]
