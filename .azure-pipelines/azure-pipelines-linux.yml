@@ -248,6 +248,7 @@ jobs:
         CONFIG: linux_64_cuda_compiler_versionNonempiopenmpipython3.9.____cpython
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-comp7
+    maxParallel: 40
   timeoutInMinutes: 360
 
   steps:

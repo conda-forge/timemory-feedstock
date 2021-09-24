@@ -44,6 +44,7 @@ jobs:
       win_64_cuda_compiler_versionNonepython3.9.____cpython:
         CONFIG: win_64_cuda_compiler_versionNonepython3.9.____cpython
         UPLOAD_PACKAGES: 'True'
+    maxParallel: 8
   timeoutInMinutes: 360
   variables:
     CONDA_BLD_PATH: D:\\bld\\
@@ -119,7 +120,7 @@ jobs:
 
     - script: |
         call activate base
-        conda.exe build "recipe" -m .ci_support\%CONFIG%.yaml
+        conda.exe build "recipe" -m .ci_support\%CONFIG%.yaml --suppress-variables
       displayName: Build recipe
       env:
         PYTHONUNBUFFERED: 1
