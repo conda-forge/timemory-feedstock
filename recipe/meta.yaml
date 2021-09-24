@@ -5,8 +5,9 @@
 {% set generator = "Unix Makefiles" %}    # [not win]
 {% set generator = "NMake Makefiles" %}   # [win]
 
-{% set cmake_args = "-DCMAKE_CUDA_STANDARD=14" %}   # [cuda_compiler_version != "None"]
-{% set cmake_args = "" %}                           # [cuda_compiler_version == "None"]
+{% set cmake_args = "-DCMAKE_CUDA_STANDARD=14" %}                                         # [not win and cuda_compiler_version != "None"]
+{% set cmake_args = "-DCMAKE_CUDA_STANDARD=14 -DCUDA_rt_LIBRARY= -DCUDA_dl_LIBRARY=" %}   # [win and cuda_compiler_version != "None"]
+{% set cmake_args = "" %}                                                                 # [cuda_compiler_version == "None"]
 
 {% set generator_args = "-j2" %}  # [osx]
 {% set generator_args = "-j1" %}  # [linux]
