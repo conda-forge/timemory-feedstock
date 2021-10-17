@@ -8,33 +8,6 @@ jobs:
     vmImage: windows-2019
   strategy:
     matrix:
-      win_64_cuda_compiler_version11.1python3.6.____cpython:
-        CONFIG: win_64_cuda_compiler_version11.1python3.6.____cpython
-        UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compiler_version11.1python3.7.____cpython:
-        CONFIG: win_64_cuda_compiler_version11.1python3.7.____cpython
-        UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compiler_version11.1python3.8.____cpython:
-        CONFIG: win_64_cuda_compiler_version11.1python3.8.____cpython
-        UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compiler_version11.1python3.9.____cpython:
-        CONFIG: win_64_cuda_compiler_version11.1python3.9.____cpython
-        UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compiler_version11.2python3.6.____cpython:
-        CONFIG: win_64_cuda_compiler_version11.2python3.6.____cpython
-        UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compiler_version11.2python3.7.____cpython:
-        CONFIG: win_64_cuda_compiler_version11.2python3.7.____cpython
-        UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compiler_version11.2python3.8.____cpython:
-        CONFIG: win_64_cuda_compiler_version11.2python3.8.____cpython
-        UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compiler_version11.2python3.9.____cpython:
-        CONFIG: win_64_cuda_compiler_version11.2python3.9.____cpython
-        UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compiler_versionNonepython3.6.____cpython:
-        CONFIG: win_64_cuda_compiler_versionNonepython3.6.____cpython
-        UPLOAD_PACKAGES: 'True'
       win_64_cuda_compiler_versionNonepython3.7.____cpython:
         CONFIG: win_64_cuda_compiler_versionNonepython3.7.____cpython
         UPLOAD_PACKAGES: 'True'
@@ -44,7 +17,7 @@ jobs:
       win_64_cuda_compiler_versionNonepython3.9.____cpython:
         CONFIG: win_64_cuda_compiler_versionNonepython3.9.____cpython
         UPLOAD_PACKAGES: 'True'
-    maxParallel: 8
+    maxParallel: 3
   timeoutInMinutes: 360
   variables:
     CONDA_BLD_PATH: D:\\bld\\
