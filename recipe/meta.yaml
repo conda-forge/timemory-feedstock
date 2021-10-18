@@ -1,6 +1,6 @@
 {% set name = "timemory" %}
 {% set version = "3.2.3" %}
-{% set build = 3 %}
+{% set build = 4 %}
 
 {% set generator = "Unix Makefiles" %}    # [not win]
 {% set generator = "NMake Makefiles" %}   # [win]
@@ -74,12 +74,13 @@ build:
        -DCMAKE_VERBOSE_MAKEFILE=ON \
     -- {{ generator_args }}"
   skip: true                  # [(x86 and not x86_64) or (osx and py==36)]
+  skip: true  # [win and cuda_compiler_version != "None"]
 
 requirements:
   build:
     - {{ compiler("c") }}
     - {{ compiler("cxx") }}
-    - {{ compiler("cuda") }}  # [(win or linux) and cuda_compiler_version != "None"]
+    - {{ compiler("cuda") }}  # [linux and cuda_compiler_version != "None"]
     - cmake
   host:
     - python
