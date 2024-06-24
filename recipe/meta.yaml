@@ -1,6 +1,6 @@
 {% set name = "timemory" %}
 {% set version = "3.2.3" %}
-{% set build = 4 %}
+{% set build = 5 %}
 
 {% set generator = "Unix Makefiles" %}    # [not win]
 {% set generator = "NMake Makefiles" %}   # [win]
@@ -82,10 +82,11 @@ requirements:
     - {{ compiler("cxx") }}
     - {{ compiler("cuda") }}  # [linux and cuda_compiler_version != "None"]
     - cmake
+    - make
   host:
     - python
     - pip
-    - cython
+    - cython <3
     - pybind11
     - pybind11-abi
     - scikit-build
