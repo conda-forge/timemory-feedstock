@@ -1,6 +1,6 @@
 {% set name = "timemory" %}
 {% set version = "3.2.3" %}
-{% set build = 4 %}
+{% set build = 5 %}
 
 {% set generator = "Unix Makefiles" %}    # [not win]
 {% set generator = "NMake Makefiles" %}   # [win]
@@ -40,7 +40,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: 2335961755a304bfc33a8d2427161c13f9592f87ae7a7ae8c901ca41c0127504
 
 build:
@@ -79,6 +79,7 @@ build:
 requirements:
   build:
     - {{ compiler("c") }}
+    - {{ stdlib("c") }}
     - {{ compiler("cxx") }}
     - {{ compiler("cuda") }}  # [linux and cuda_compiler_version != "None"]
     - cmake
